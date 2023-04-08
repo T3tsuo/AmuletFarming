@@ -209,6 +209,7 @@ def in_battle():
     while time.time() < end_time:
         if pyautogui.locateOnScreen(frisked_meowth_png) is not None:
             print("Found item")
+            time.sleep(2)
             # change pokemon
             change_pokemon()
             # switch to attacking stage
