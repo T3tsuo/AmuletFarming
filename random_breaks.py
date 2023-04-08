@@ -7,8 +7,8 @@ def to_grass_break():
 
 
 def use_cut_break():
-    # 4 - 5 seconds
-    return random() * 1 + 4
+    # 3 - 4 seconds
+    return random() * 1 + 3
 
 
 def seven_blocks():
@@ -42,8 +42,8 @@ def paying_attention_break():
 
 
 def attack_break():
-    # timer between 32 and 37 seconds for waiting out a horde attack
-    return random() * 5 + 32
+    # timer between 17 and 22 seconds for waiting out a horde attack
+    return random() * 5 + 17
 
 
 def starting_battle_break():
@@ -57,8 +57,8 @@ def run_away_break():
 
 
 def heal_up_break():
-    # dialogue of nurse healing break from 9 seconds to 14 seconds
-    return random() * 5 + 9
+    # dialogue of nurse healing break from 4 seconds to 5 seconds
+    return random() * 1 + 4
 
 
 # break for hoping on bike from 0.1 - 0.25 seconds
