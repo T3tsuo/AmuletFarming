@@ -42,8 +42,8 @@ def paying_attention_break():
 
 
 def attack_break():
-    # timer between 17 and 22 seconds for waiting out a horde attack
-    return random() * 5 + 17
+    # timer between 19 and 24 seconds for waiting out a horde attack
+    return random() * 5 + 19
 
 
 def starting_battle_break():
