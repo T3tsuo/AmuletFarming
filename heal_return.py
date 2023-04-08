@@ -67,7 +67,3 @@ def go_to_grass():
 def run():
     leave_building()
     go_to_grass()
-
-
-time.sleep(2)
-run()
