@@ -157,17 +157,18 @@ def which_to_attack(n):
 
 
 def run_away():
-    location = pyautogui.locateOnScreen(run_option,
-                                        confidence=0.8)
-    pyautogui.moveTo(location.left + random() * location.width,
-                     location.top + random() * location.height)
-    pydirectinput.click()
-    print("Run Away")
-    time.sleep(random_breaks.paying_attention_break())
     while True:
-        if pyautogui.locateOnScreen(battle_done, confidence=0.8) is not None:
+        if pyautogui.locateOnScreen(run_option, confidence=0.8) is not None:
+            location = pyautogui.locateOnScreen(run_option,
+                                                confidence=0.8)
+            pyautogui.moveTo(location.left + random() * location.width,
+                             location.top + random() * location.height)
+            pydirectinput.click()
+            print("Run Away")
+        elif pyautogui.locateOnScreen(inside_cave, confidence=0.8) is not None:
+            # ran away successfully
             break
-        else:
+        else:    
             time.sleep(0.1)
 
 
