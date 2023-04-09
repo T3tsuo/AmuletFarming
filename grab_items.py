@@ -165,7 +165,7 @@ def run_away():
                              location.top + random() * location.height)
             pydirectinput.click()
             print("Run Away")
-        elif pyautogui.locateOnScreen(inside_cave, confidence=0.8) is not None:
+        elif pyautogui.locateOnScreen(battle_done, confidence=0.8) is not None:
             # ran away successfully
             break
         else:    
