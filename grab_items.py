@@ -190,7 +190,6 @@ def in_battle():
         took_item = thief()
         # switch to run away the pokemons if battle isn't done
         if pyautogui.locateOnScreen(battle_done, confidence=0.8) is None:
-            print("Run Away")
             run_away()
         print("Battle End")
         # found item but return if we took the item
