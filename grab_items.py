@@ -51,6 +51,7 @@ def heal_up():
         # once we are at the nurse
         if pyautogui.locateOnScreen(inside_building, confidence=0.8) is not None:
             # then set flag to true, so we can talk to the nurse
+            print("At Nurse")
             at_nurse = True
             time.sleep(0.5)
         else:
@@ -171,8 +172,6 @@ def teleport_away():
     pydirectinput.press('5')
     print("Teleport")
     time.sleep(random_breaks.paying_attention_break())
-    print("At Nurse")
-    time.sleep(random_breaks.to_nurse())
 
 
 def in_battle():
