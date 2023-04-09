@@ -34,6 +34,15 @@ amulet_png = Image.open(requests.get("https://raw.githubusercontent.com/"
 quick_claw_png = Image.open(requests.get("https://raw.githubusercontent.com/"
                                          "T3tsuo/AmuletFarming/main/location/take_quick_claw.png", stream=True).raw)
 
+fight_option = Image.open(requests.get("https://raw.githubusercontent.com/"
+                                       "T3tsuo/AmuletFarming/main/location/fight_option.png", stream=True).raw)
+
+run_option = Image.open(requests.get("https://raw.githubusercontent.com/"
+                                     "T3tsuo/AmuletFarming/main/location/run_option.png", stream=True).raw)
+
+thief_move = Image.open(requests.get("https://raw.githubusercontent.com/"
+                                     "T3tsuo/AmuletFarming/main/location/thief_move.png", stream=True).raw)
+
 
 def heal_up():
     at_nurse = False
@@ -62,12 +71,20 @@ def thief():
     select_pokemon = 0
     # while the item is not found, and we still have not attacked all 5 pokemons
     while select_pokemon < 3:
-        # press fight
-        pydirectinput.press('z')
+        # click fight
+        location = pyautogui.locateOnScreen(fight_option,
+                                            confidence=0.8)
+        pyautogui.moveTo(location.left + random() * location.width,
+                         location.top + random() * location.height)
+        pydirectinput.click()
         print("Fight")
         time.sleep(random_breaks.paying_attention_break())
         # press thief (first move)
-        pydirectinput.press('z')
+        location = pyautogui.locateOnScreen(thief_move,
+                                            confidence=0.8)
+        pyautogui.moveTo(location.left + random() * location.width,
+                         location.top + random() * location.height)
+        pydirectinput.click()
         print("Thief")
         time.sleep(random_breaks.paying_attention_break())
         # select and attack specific pokemon
@@ -77,25 +94,23 @@ def thief():
         # if there is a shiny
         isShiny = False
         # wait for entire attack break while checking if thief took an item
-        seconds = random_breaks.attack_break()
-        end_time = time.time() + seconds
-        while time.time() < end_time:
+        turn_done = False
+        while turn_done is False:
+            # if turn is done
+            if pyautogui.locateOnScreen(fight_option, confidence=0.8) is not None:
+                turn_done = True
             # if shiny is found
             if pyautogui.locateOnScreen(shiny_png, confidence=0.8) is not None:
                 isShiny = True
                 print("Shiny Found")
             # if item is found
-            if pyautogui.locateOnScreen(stole_png, confidence=0.8) is not None and not isShiny:
+            if pyautogui.locateOnScreen(stole_png, confidence=0.8) is not None and not isShiny and turn_done:
                 print("Stole item")
-                # if the item is found early then wait the remaining time before exiting
-                time.sleep(end_time - time.time())
                 # return that item was found
                 return True
             if pyautogui.locateOnScreen(flinched_png, confidence=0.8) is not None:
                 flinched = True
                 print("Flinched")
-                # if the pokemon flinched then wait the remaining time of the turn before exiting
-                time.sleep(end_time - time.time())
             if pyautogui.locateOnScreen(battle_done, confidence=0.8) is not None:
                 print("Horde is dead")
                 # if item was stolen
@@ -136,44 +151,19 @@ def which_to_attack(n):
         time.sleep(random_breaks.paying_attention_break())
 
 
-def kill_all():
-    dead = False
-    # break from 1.5 - 2 seconds
-    time.sleep(random_breaks.to_grass_break())
-    while not dead:
-        # press fight
-        pydirectinput.press('z')
-        print("Fight")
-        time.sleep(random_breaks.paying_attention_break())
-        # go to second move
-        pydirectinput.press('right')
-        time.sleep(random_breaks.paying_attention_break())
-        # press surf (second move)
-        pydirectinput.press('z')
-        print("Surf")
-        time.sleep(random_breaks.paying_attention_break())
-        # select and attack the second pokemon
-        which_to_attack(1)
-        # wait for entire attack break while checking if thief took an item
-        seconds = random_breaks.attack_break()
-        end_time = time.time() + seconds
-        while time.time() < end_time:
-            # if battle is done
-            if pyautogui.locateOnScreen(battle_done, confidence=0.8) is not None:
-                # then they are dead
-                dead = True
-                break
-
-
 def run_away():
-    pydirectinput.press('right')
+    location = pyautogui.locateOnScreen(run_option,
+                                        confidence=0.8)
+    pyautogui.moveTo(location.left + random() * location.width,
+                     location.top + random() * location.height)
+    pydirectinput.click()
+    print("Run Away")
     time.sleep(random_breaks.paying_attention_break())
-    pydirectinput.press('down')
-    time.sleep(random_breaks.paying_attention_break())
-    pydirectinput.press('z')
-    print('Run away')
-    time.sleep(random_breaks.paying_attention_break())
-    time.sleep(random_breaks.run_away_break())
+    while True:
+        if pyautogui.locateOnScreen(battle_done, confidence=0.8) is not None:
+            break
+        else:
+            time.sleep(0.1)
 
 
 def teleport_away():
@@ -186,20 +176,26 @@ def teleport_away():
 
 
 def in_battle():
-    end_time = time.time() + random_breaks.starting_battle_break()
-    while time.time() < end_time:
-        if pyautogui.locateOnScreen(frisked_meowth_png) is not None:
-            print("Found item")
-            time.sleep(2)
-            # switch to attacking stage
-            took_item = thief()
-            # switch to run away the pokemons if battle isn't done
-            if pyautogui.locateOnScreen(battle_done, confidence=0.8) is None:
-                print("Run Away")
-                run_away()
-            print("Battle End")
-            # found item but return if we took the item
-            return True, took_item
+    # keep on checking until we are in battle
+    while True:
+        # check if we can fight yet
+        if pyautogui.locateOnScreen(fight_option, confidence=0.8) is not None:
+            break
+        else:
+            time.sleep(0.1)
+    # once we can fight, check if we found item
+    if pyautogui.locateOnScreen(frisked_meowth_png) is not None:
+        print("Found item")
+        time.sleep(2)
+        # switch to attacking stage
+        took_item = thief()
+        # switch to run away the pokemons if battle isn't done
+        if pyautogui.locateOnScreen(battle_done, confidence=0.8) is None:
+            print("Run Away")
+            run_away()
+        print("Battle End")
+        # found item but return if we took the item
+        return True, took_item
     # did not find any items on pokemon so did not take it
     return False, False
 
