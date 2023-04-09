@@ -7,15 +7,14 @@ import requests
 
 import random_breaks
 
-
 stole_png = Image.open(requests.get("https://raw.githubusercontent.com/"
                                     "T3tsuo/AmuletFarming/main/battle_logs/stole.png", stream=True).raw)
 
 flinched_png = Image.open(requests.get("https://raw.githubusercontent.com/"
                                        "T3tsuo/AmuletFarming/main/battle_logs/flinched.png", stream=True).raw)
 
-quagsire_png = Image.open(requests.get("https://raw.githubusercontent.com/"
-                                       "T3tsuo/AmuletFarming/main/location/quagsire.png", stream=True).raw)
+banette_png = Image.open(requests.get("https://raw.githubusercontent.com/"
+                                      "T3tsuo/AmuletFarming/main/location/banette.png", stream=True).raw)
 
 frisked_meowth_png = Image.open(requests.get("https://raw.githubusercontent.com/T3tsuo/AmuletFarming/main/"
                                              "battle_logs/frisked_meowth.png", stream=True).raw)
@@ -33,7 +32,7 @@ amulet_png = Image.open(requests.get("https://raw.githubusercontent.com/"
                                      "T3tsuo/AmuletFarming/main/location/take_amulet.png", stream=True).raw)
 
 quick_claw_png = Image.open(requests.get("https://raw.githubusercontent.com/"
-                                     "T3tsuo/AmuletFarming/main/location/take_quick_claw.png", stream=True).raw)
+                                         "T3tsuo/AmuletFarming/main/location/take_quick_claw.png", stream=True).raw)
 
 
 def heal_up():
@@ -208,9 +207,9 @@ def in_battle():
 def take_item():
     item_taken = False
     while item_taken is False:
-        if pyautogui.locateOnScreen(quagsire_png, confidence=0.8) is not None:
+        if pyautogui.locateOnScreen(banette_png, confidence=0.8) is not None:
             # grab location of image
-            location = pyautogui.locateOnScreen(quagsire_png, confidence=0.8)
+            location = pyautogui.locateOnScreen(banette_png, confidence=0.8)
             # click randomly on the box
             pyautogui.moveTo(location.left + random() * location.width, location.top + random() * location.height)
             pydirectinput.click()
