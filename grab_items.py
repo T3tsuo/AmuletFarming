@@ -58,24 +58,6 @@ def heal_up():
     time.sleep(random_breaks.input_break())
 
 
-def change_pokemon():
-    # go to pokemon
-    pydirectinput.press('down')
-    # human input break
-    time.sleep(random_breaks.paying_attention_break())
-    pydirectinput.press('z')
-    time.sleep(random_breaks.paying_attention_break())
-    # following pokemon
-    pydirectinput.press('right')
-    time.sleep(random_breaks.paying_attention_break())
-    # select the pokemon
-    pydirectinput.press('z')
-    print("Change Pokemon")
-    time.sleep(random_breaks.paying_attention_break())
-    time.sleep(random_breaks.attack_break())
-    print("Time To Attack")
-
-
 def thief():
     # counter to keep track of which pokemon is currently selected
     select_pokemon = 0
@@ -210,14 +192,12 @@ def in_battle():
         if pyautogui.locateOnScreen(frisked_meowth_png) is not None:
             print("Found item")
             time.sleep(2)
-            # change pokemon
-            change_pokemon()
             # switch to attacking stage
             took_item = thief()
-            # switch to killing all the pokemons if battle isn't done
+            # switch to run away the pokemons if battle isn't done
             if pyautogui.locateOnScreen(battle_done, confidence=0.8) is None:
-                print("Kill All")
-                kill_all()
+                print("Run Away")
+                run_away()
             print("Battle End")
             # found item but return if we took the item
             return True, took_item
