@@ -185,7 +185,6 @@ def in_battle():
     # once we can fight, check if we found item
     if pyautogui.locateOnScreen(frisked_meowth_png) is not None:
         print("Found item")
-        time.sleep(2)
         # switch to attacking stage
         took_item = thief()
         # switch to run away the pokemons if battle isn't done
