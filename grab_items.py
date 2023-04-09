@@ -90,6 +90,8 @@ def thief():
         time.sleep(random_breaks.paying_attention_break())
         # select and attack specific pokemon
         which_to_attack(select_pokemon)
+        # if we stole the item
+        stole_item = False
         # if pokemon flinches
         flinched = False
         # if there is a shiny
@@ -105,10 +107,9 @@ def thief():
                 isShiny = True
                 print("Shiny Found")
             # if item is found
-            if pyautogui.locateOnScreen(stole_png, confidence=0.8) is not None and not isShiny and turn_done:
+            if pyautogui.locateOnScreen(stole_png, confidence=0.8) is not None and not isShiny and stole_item is False:
                 print("Stole item")
-                # return that item was found
-                return True
+                stole_item = True
             if pyautogui.locateOnScreen(flinched_png, confidence=0.8) is not None:
                 flinched = True
                 print("Flinched")
@@ -123,6 +124,9 @@ def thief():
                     return False
         while isShiny:
             run_away()
+        if stole_item:
+          # return that item was found
+                return True
         if not flinched:
             select_pokemon += 1
     return False
