@@ -122,6 +122,7 @@ def thief():
                 else:
                     # return that item was not found
                     return False
+        time.sleep(random_breaks.input_break())
         while isShiny:
             run_away()
         if stole_item:
@@ -167,6 +168,7 @@ def run_away():
             print("Run Away")
         elif pyautogui.locateOnScreen(battle_done, confidence=0.8) is not None:
             # ran away successfully
+            time.sleep(random_breaks.input_break())
             break
         else:    
             time.sleep(0.1)
@@ -184,6 +186,7 @@ def in_battle():
     while True:
         # check if we can fight yet
         if pyautogui.locateOnScreen(fight_option, confidence=0.8) is not None:
+            time.sleep(random_breaks.input_break())
             break
         else:
             time.sleep(0.1)
