@@ -1,2 +1,3 @@
-# AmuletFarming
-Kanto amulet coin farming (route 5)
+# AmuletFarming Kanto (route 5)
+
+Full documentation is in PokemonUI Repository
