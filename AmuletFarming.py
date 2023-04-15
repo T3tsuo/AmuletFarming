@@ -19,6 +19,7 @@ if os.path.isfile("mail_password.dat"):
 
 
 def run(x=None, run_code_time=None):
+    global google_email, mail_password
     if x is None and run_code_time is None:
         # then ask for amount of times user can use sweet scent before going to pokecenter
         x = input("Number of times to use sweet scent: ")
