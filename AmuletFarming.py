@@ -1,13 +1,21 @@
 import time
 import os
+import pickle
 
 import grab_items
 import heal_return
 import time_to_seconds
+from shiny_notify import ping_mail, check_mail_acc
 
 # this program grabs items and then fly's to go restore pokemon pp
 
 os.environ['REQUESTS_CA_BUNDLE'] = "certifi/cacert.pem"
+
+if os.path.isfile("email.dat"):
+    google_email = pickle.load(open("email.dat", "rb"))
+
+if os.path.isfile("mail_password.dat"):
+    mail_password = pickle.load(open("mail_password.dat", "rb"))
 
 
 def run(x=None, run_code_time=None):
@@ -33,3 +41,8 @@ def run(x=None, run_code_time=None):
             print(str(round((time.time() - start_time) / (end_time - start_time) * 100)) + "% Done")
         else:
             print("100% Done")
+
+    # send email to user that script is done if they have put their acc details
+    if check_mail_acc():
+        ping_mail(google_email, mail_password, "Script is DONE")
+

@@ -1,4 +1,7 @@
+import sys
 import time
+import os
+import pickle
 import pyautogui
 import pydirectinput
 from random import random
@@ -6,6 +9,7 @@ from PIL import Image
 import requests
 
 import random_breaks
+from shiny_notify import ping_mail, check_mail_acc
 
 stole_png = Image.open(requests.get("https://raw.githubusercontent.com/"
                                     "T3tsuo/AmuletFarming/main/battle_logs/stole.png", stream=True).raw)
@@ -18,9 +22,6 @@ banette_png = Image.open(requests.get("https://raw.githubusercontent.com/"
 
 frisked_meowth_png = Image.open(requests.get("https://raw.githubusercontent.com/T3tsuo/AmuletFarming/main/"
                                              "battle_logs/frisked_meowth.png", stream=True).raw)
-
-shiny_png = Image.open(requests.get("https://raw.githubusercontent.com/"
-                                    "T3tsuo/AmuletFarming/main/battle_logs/shiny_pokemon.png", stream=True).raw)
 
 inside_building = Image.open(requests.get("https://raw.githubusercontent.com/"
                                           "T3tsuo/AmuletFarming/main/location/inside_building.png", stream=True).raw)
@@ -42,6 +43,15 @@ run_option = Image.open(requests.get("https://raw.githubusercontent.com/"
 
 thief_move = Image.open(requests.get("https://raw.githubusercontent.com/"
                                      "T3tsuo/AmuletFarming/main/location/thief_move.png", stream=True).raw)
+
+shiny_png = Image.open(requests.get("https://raw.githubusercontent.com/"
+                                    "T3tsuo/AmuletFarming/main/location/shiny_pokemon.png", stream=True).raw)
+
+if os.path.isfile("email.dat"):
+    google_email = pickle.load(open("email.dat", "rb"))
+
+if os.path.isfile("mail_password.dat"):
+    mail_password = pickle.load(open("mail_password.dat", "rb"))
 
 
 def heal_up():
@@ -94,20 +104,14 @@ def thief():
         stole_item = False
         # if pokemon flinches
         flinched = False
-        # if there is a shiny
-        isShiny = False
         # wait for entire attack break while checking if thief took an item
         turn_done = False
         while turn_done is False:
             # if turn is done
             if pyautogui.locateOnScreen(fight_option, confidence=0.8) is not None:
                 turn_done = True
-            # if shiny is found
-            if pyautogui.locateOnScreen(shiny_png, confidence=0.8) is not None:
-                isShiny = True
-                print("Shiny Found")
             # if item is found
-            if pyautogui.locateOnScreen(stole_png, confidence=0.8) is not None and not isShiny and stole_item is False:
+            if pyautogui.locateOnScreen(stole_png, confidence=0.8) is not None and stole_item is False:
                 print("Stole item")
                 stole_item = True
             if pyautogui.locateOnScreen(flinched_png, confidence=0.8) is not None:
@@ -123,11 +127,9 @@ def thief():
                     # return that item was not found
                     return False
         time.sleep(random_breaks.input_break())
-        while isShiny:
-            run_away()
         if stole_item:
-          # return that item was found
-                return True
+            # return that item was found
+            return True
         if not flinched:
             select_pokemon += 1
     return False
@@ -170,7 +172,7 @@ def run_away():
             # ran away successfully
             time.sleep(random_breaks.input_break())
             break
-        else:    
+        else:
             time.sleep(0.1)
 
 
@@ -182,6 +184,7 @@ def teleport_away():
 
 
 def in_battle():
+    global google_email, mail_password
     # keep on checking until we are in battle
     while True:
         # check if we can fight yet
@@ -190,8 +193,13 @@ def in_battle():
             break
         else:
             time.sleep(0.1)
+    # check shiny
+    if pyautogui.locateOnScreen(shiny_png, confidence=0.8) is not None:
+        if check_mail_acc():
+            ping_mail(google_email, mail_password, "SHINY FOUND")
+        sys.exit(0)
     # once we can fight, check if we found item
-    if pyautogui.locateOnScreen(frisked_meowth_png) is not None:
+    elif pyautogui.locateOnScreen(frisked_meowth_png) is not None:
         print("Found item")
         # switch to attacking stage
         took_item = thief()
