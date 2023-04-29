@@ -12,8 +12,8 @@ def use_cut_break():
 
 
 def seven_blocks():
-    # 0.56 - 0.58 seconds
-    return random() * 0.02 + 0.56
+    # 0.54 - 0.56 seconds
+    return random() * 0.02 + 0.54
 
 
 def eleven_blocks():
