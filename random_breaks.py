@@ -22,7 +22,7 @@ def eleven_blocks():
 
 
 def three_blocks():
-    # from 0.23 to 0.24 seconds
+    # from 0.23 to 0.25 seconds
     return random() * 0.02 + 0.23
 
 
