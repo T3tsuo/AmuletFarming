@@ -10,6 +10,7 @@ import requests
 
 import random_breaks
 from shiny_notify import ping_mail, check_mail_acc
+from battle_log_config import two_log_region
 
 stole_png = Image.open(requests.get("https://raw.githubusercontent.com/"
                                     "T3tsuo/AmuletFarming/main/battle_logs/stole.png", stream=True).raw)
@@ -111,10 +112,11 @@ def thief():
             if pyautogui.locateOnScreen(fight_option, confidence=0.8) is not None:
                 turn_done = True
             # if item is found
-            if pyautogui.locateOnScreen(stole_png, confidence=0.8) is not None and stole_item is False:
+            if pyautogui.locateOnScreen(stole_png, confidence=0.8, region=two_log_region()) \
+                    is not None and stole_item is False:
                 print("Stole item")
                 stole_item = True
-            if pyautogui.locateOnScreen(flinched_png, confidence=0.8) is not None:
+            if pyautogui.locateOnScreen(flinched_png, confidence=0.8, region=two_log_region()) is not None:
                 flinched = True
                 print("Flinched")
             if pyautogui.locateOnScreen(battle_done, confidence=0.8) is not None:
@@ -199,7 +201,7 @@ def in_battle():
             ping_mail(google_email, mail_password, "SHINY FOUND")
         sys.exit(0)
     # once we can fight, check if we found item
-    elif pyautogui.locateOnScreen(frisked_meowth_png) is not None:
+    elif pyautogui.locateOnScreen(frisked_meowth_png, region=two_log_region()) is not None:
         print("Found item")
         # switch to attacking stage
         took_item = thief()
@@ -222,7 +224,7 @@ def take_item():
             # click randomly on the box
             pyautogui.moveTo(location.left + random() * location.width, location.top + random() * location.height)
             pydirectinput.click()
-            print("Quagsire Selected")
+            print("Banette Selected")
             # user paying attention reaction time
             time.sleep(random_breaks.paying_attention_break())
             while item_taken is False:
