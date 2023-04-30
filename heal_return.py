@@ -6,10 +6,18 @@ import requests
 from PIL import Image
 
 import random_breaks
+from path_correction import self_align_side
 
 
 outside_building = Image.open(requests.get("https://raw.githubusercontent.com/"
                                            "T3tsuo/AmuletFarming/main/location/outside_building.png", stream=True).raw)
+
+sign_fence = Image.open(requests.get("https://raw.githubusercontent.com/"
+                                     "T3tsuo/AmuletFarming/main/location/sign_fence.png", stream=True).raw)
+
+
+outside_building_align_val = 686
+sign_fence_align_val = 161
 
 
 def leave_building():
@@ -39,6 +47,8 @@ def go_to_grass():
     time.sleep(random_breaks.three_blocks())
     pydirectinput.keyUp("left")
     time.sleep(random_breaks.input_break())
+    # check if aligned
+    self_align_side(outside_building, outside_building_align_val)
     # go down
     pydirectinput.keyDown("down")
     time.sleep(random_breaks.eleven_blocks())
@@ -49,6 +59,8 @@ def go_to_grass():
     time.sleep(random_breaks.seven_blocks())
     pydirectinput.keyUp("right")
     time.sleep(random_breaks.input_break())
+    # check if aligned
+    self_align_side(sign_fence, sign_fence_align_val)
     # look down
     pydirectinput.press("down")
     time.sleep(random_breaks.input_break())
