@@ -41,21 +41,25 @@ def compare_diff(x1, x2):
 def self_align_side(img, val):
     if can_align:
         while True:
-            if pyautogui.locateOnScreen(img, confidence=0.8) is not None:
-                location = pyautogui.locateOnScreen(img, confidence=0.8)
-                pydirectinput.PAUSE = 0.03
-                if compare_diff(game_config_dict["game_xpos"], location[0]) < val - 25:
-                    print("Going left")
-                    pydirectinput.press("left")
-                    time.sleep(random_breaks.input_break())
-                elif compare_diff(game_config_dict["game_xpos"], location[0]) > val + 25:
-                    print("Going right")
-                    pydirectinput.press("right")
-                    time.sleep(random_breaks.input_break())
-                else:
-                    print("Aligned")
-                    pydirectinput.PAUSE = 0.1
-                    break
+            # if there is a Nonetype assignment by accident then continue to try again
+            try:
+                if pyautogui.locateOnScreen(img, confidence=0.8) is not None:
+                    location = pyautogui.locateOnScreen(img, confidence=0.8)
+                    pydirectinput.PAUSE = 0.03
+                    if compare_diff(game_config_dict["game_xpos"], location[0]) < val - 25:
+                        print("Going left")
+                        pydirectinput.press("left")
+                        time.sleep(random_breaks.input_break())
+                    elif compare_diff(game_config_dict["game_xpos"], location[0]) > val + 25:
+                        print("Going right")
+                        pydirectinput.press("right")
+                        time.sleep(random_breaks.input_break())
+                    else:
+                        print("Aligned")
+                        pydirectinput.PAUSE = 0.1
+                        break
+            except TypeError:
+                pass
     else:
         return
 
