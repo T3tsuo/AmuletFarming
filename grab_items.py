@@ -62,18 +62,21 @@ def heal_up():
         # once we are at the nurse
         if pyautogui.locateOnScreen(inside_building, confidence=0.8) is not None:
             # then set flag to true, so we can talk to the nurse
-            print("At Nurse")
+            with open("log.txt", "a") as f_temp:
+                print("At Nurse", file=f_temp)
             at_nurse = True
             time.sleep(0.5)
         else:
             time.sleep(0.5)
 
     # talk through dialogue
-    print("Talking to Nurse")
+    with open("log.txt", "a") as f_temp:
+        print("Talking to Nurse", file=f_temp)
     pydirectinput.keyDown("z")
     time.sleep(random_breaks.heal_up_break())
     pydirectinput.keyUp("z")
-    print("Healing Done")
+    with open("log.txt", "a") as f_temp:
+        print("Healing Done", file=f_temp)
     # break
     time.sleep(random_breaks.input_break())
 
@@ -89,7 +92,8 @@ def thief():
         pyautogui.moveTo(location.left + random() * location.width,
                          location.top + random() * location.height)
         pydirectinput.click()
-        print("Fight")
+        with open("log.txt", "a") as f_temp:
+            print("Fight", file=f_temp)
         time.sleep(random_breaks.paying_attention_break())
         # press thief (first move)
         location = pyautogui.locateOnScreen(thief_move,
@@ -97,7 +101,8 @@ def thief():
         pyautogui.moveTo(location.left + random() * location.width,
                          location.top + random() * location.height)
         pydirectinput.click()
-        print("Thief")
+        with open("log.txt", "a") as f_temp:
+            print("Thief", file=f_temp)
         time.sleep(random_breaks.paying_attention_break())
         # select and attack specific pokemon
         which_to_attack(select_pokemon)
@@ -114,16 +119,20 @@ def thief():
             # if item is found
             if pyautogui.locateOnScreen(stole_png, confidence=0.8, region=two_log_region()) \
                     is not None and stole_item is False:
-                print("Stole item")
+                with open("log.txt", "a") as f_temp:
+                    print("Stole item", file=f_temp)
                 stole_item = True
             if pyautogui.locateOnScreen(flinched_png, confidence=0.8, region=two_log_region()) is not None:
                 flinched = True
-                print("Flinched")
+                with open("log.txt", "a") as f_temp:
+                    print("Flinched", file=f_temp)
             if pyautogui.locateOnScreen(battle_done, confidence=0.8) is not None:
-                print("Horde is dead")
+                with open("log.txt", "a") as f_temp:
+                    print("Horde is dead", file=f_temp)
                 # if item was stolen
                 if pyautogui.locateOnScreen(stole_png, confidence=0.8) is not None:
-                    print("Stole item")
+                    with open("log.txt", "a") as f_temp:
+                        print("Stole item", file=f_temp)
                     return True
                 else:
                     # return that item was not found
@@ -138,7 +147,8 @@ def thief():
 
 
 def which_to_attack(n):
-    print("SELECT #" + str(n + 1))
+    with open("log.txt", "a") as f_temp:
+        print("SELECT #" + str(n + 1), file=f_temp)
     if n == 0:
         # select the second pokemon
         pydirectinput.press("z")
@@ -169,7 +179,8 @@ def run_away():
             pyautogui.moveTo(location.left + random() * location.width,
                              location.top + random() * location.height)
             pydirectinput.click()
-            print("Run Away")
+            with open("log.txt", "a") as f_temp:
+                print("Run Away", file=f_temp)
         elif pyautogui.locateOnScreen(battle_done, confidence=0.8) is not None:
             # ran away successfully
             time.sleep(random_breaks.input_break())
@@ -181,7 +192,8 @@ def run_away():
 def teleport_away():
     # press teleport
     pydirectinput.press('5')
-    print("Teleport")
+    with open("log.txt", "a") as f_temp:
+        print("Teleport", file=f_temp)
     time.sleep(random_breaks.paying_attention_break())
 
 
@@ -202,13 +214,15 @@ def in_battle():
         sys.exit(0)
     # once we can fight, check if we found item
     elif pyautogui.locateOnScreen(frisked_meowth_png, region=two_log_region()) is not None:
-        print("Found item")
+        with open("log.txt", "a") as f_temp:
+            print("Found item", file=f_temp)
         # switch to attacking stage
         took_item = thief()
         # switch to run away the pokemons if battle isn't done
         if pyautogui.locateOnScreen(battle_done, confidence=0.8) is None:
             run_away()
-        print("Battle End")
+        with open("log.txt", "a") as f_temp:
+            print("Battle End", file=f_temp)
         # found item but return if we took the item
         return True, took_item
     # did not find any items on pokemon so did not take it
@@ -224,7 +238,8 @@ def take_item():
             # click randomly on the box
             pyautogui.moveTo(location.left + random() * location.width, location.top + random() * location.height)
             pydirectinput.click()
-            print("Banette Selected")
+            with open("log.txt", "a") as f_temp:
+                print("Banette Selected", file=f_temp)
             # user paying attention reaction time
             time.sleep(random_breaks.paying_attention_break())
             while item_taken is False:
@@ -232,7 +247,8 @@ def take_item():
                 if pyautogui.locateOnScreen(amulet_png, confidence=0.8):
                     location = pyautogui.locateOnScreen(amulet_png,
                                                         confidence=0.8)
-                    print("Taking Amulet Coin")
+                    with open("log.txt", "a") as f_temp:
+                        print("Taking Amulet Coin", file=f_temp)
                     pyautogui.moveTo(location.left + random() * location.width,
                                      location.top + random() * location.height)
                     pydirectinput.click()
@@ -242,7 +258,8 @@ def take_item():
                     # same thing for quick claw
                     location = pyautogui.locateOnScreen(quick_claw_png,
                                                         confidence=0.8)
-                    print("Taking Quick Claw")
+                    with open("log.txt", "a") as f_temp:
+                        print("Taking Quick Claw", file=f_temp)
                     pyautogui.moveTo(location.left + random() * location.width,
                                      location.top + random() * location.height)
                     pydirectinput.click()
@@ -254,12 +271,14 @@ def run(x):
     for i in range(x):
         # use sweet scent
         pydirectinput.press('4')
-        print("Sweet Scent")
+        with open("log.txt", "a") as f_temp:
+            print("Sweet Scent", file=f_temp)
         # check if item was found and if it was it will try to get it and return if it did or didn't
         found_item, took_item = in_battle()
         # if you did not find the item nor stole it, means that thief failed so run if the battle is done
         if not found_item and not took_item:
-            print("Not found")
+            with open("log.txt", "a") as f_temp:
+                print("Not found", file=f_temp)
             # run away if battle isn't done
             if pyautogui.locateOnScreen(battle_done, confidence=0.8) is None:
                 # run away from battle

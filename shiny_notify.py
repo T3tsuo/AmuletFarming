@@ -4,9 +4,11 @@ import os
 
 def check_mail_acc():
     if os.path.isfile("email.dat") and os.path.isfile("mail_password.dat"):
-        print("Mail Acc Exists")
+        with open("log.txt", "a") as f_temp:
+            print("Mail Acc Exists", file=f_temp)
         return True
-    print("Mail does not exist")
+    with open("log.txt", "a") as f_temp:
+        print("Mail does not exist", file=f_temp)
     return False
 
 
@@ -25,6 +27,8 @@ def ping_mail(user, password, mes):
         server.sendmail(sent_from, to, email_text)
         server.close()
 
-        print('Email sent!')
+        with open("log.txt", "a") as f_temp:
+            print('Email sent!', file=f_temp)
     except:
-        print('Something went wrong...')
+        with open("log.txt", "a") as f_temp:
+            print('Something went wrong...', file=f_temp)

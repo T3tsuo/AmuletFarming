@@ -30,7 +30,8 @@ def leave_building():
         # if image recognition detects that we left the building
         if pyautogui.locateOnScreen(outside_building, confidence=0.8) is not None:
             # then we are outside
-            print("Left Building")
+            with open("log.txt", "a") as f_temp:
+                print("Left Building", file=f_temp)
             is_outside = True
             time.sleep(0.5)
         else:
@@ -40,7 +41,8 @@ def leave_building():
 def go_to_grass():
     # hop on bike
     pydirectinput.press("1")
-    print("Bicycle")
+    with open("log.txt", "a") as f_temp:
+        print("Bicycle", file=f_temp)
     time.sleep(random_breaks.input_break())
     # go left
     pydirectinput.keyDown("left")
@@ -73,7 +75,8 @@ def go_to_grass():
     pydirectinput.keyDown("down")
     time.sleep(random_breaks.to_grass_break())
     pydirectinput.keyUp("down")
-    print("At Grass")
+    with open("log.txt", "a") as f_temp:
+        print("At Grass", file=f_temp)
     time.sleep(random_breaks.paying_attention_break())
 
 

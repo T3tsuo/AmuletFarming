@@ -17,6 +17,11 @@ if os.path.isfile("email.dat"):
 if os.path.isfile("mail_password.dat"):
     mail_password = pickle.load(open("mail_password.dat", "rb"))
 
+if os.path.isfile("log.txt"):
+    os.remove("log.txt")
+with open('log.txt', 'w') as f:
+    pass
+
 
 def run(x=None, run_code_time=None):
     global google_email, mail_password
@@ -28,7 +33,8 @@ def run(x=None, run_code_time=None):
         run_code_time = input("How long do you want the code to run for: ")
     x = int(x)
     run_code_time = time_to_seconds.sum_seconds(run_code_time)
-    print("Running for " + str(run_code_time) + " seconds")
+    with open("log.txt", "a") as f_temp:
+        print("Running for " + str(run_code_time) + " seconds", file=f_temp)
     time.sleep(2)
     # this is when the code started to run
     start_time = time.time()
@@ -39,9 +45,11 @@ def run(x=None, run_code_time=None):
         heal_return.run()
         grab_items.run(x)
         if end_time > time.time():
-            print(str(round((time.time() - start_time) / (end_time - start_time) * 100)) + "% Done")
+            with open("log.txt", "a") as f_temp:
+                print(str(round((time.time() - start_time) / (end_time - start_time) * 100)) + "% Done", file=f_temp)
         else:
-            print("100% Done")
+            with open("log.txt", "a") as f_temp:
+                print("100% Done", file=f_temp)
 
     # send email to user that script is done if they have put their acc details
     if check_mail_acc():

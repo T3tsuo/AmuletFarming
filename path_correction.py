@@ -47,15 +47,18 @@ def self_align_side(img, val):
                     location = pyautogui.locateOnScreen(img, confidence=0.8)
                     pydirectinput.PAUSE = 0.03
                     if compare_diff(game_config_dict["game_xpos"], location[0]) < val - 25:
-                        print("Going left")
+                        with open("log.txt", "a") as f_temp:
+                            print("Going left", file=f_temp)
                         pydirectinput.press("left")
                         time.sleep(random_breaks.input_break())
                     elif compare_diff(game_config_dict["game_xpos"], location[0]) > val + 25:
-                        print("Going right")
+                        with open("log.txt", "a") as f_temp:
+                            print("Going right", file=f_temp)
                         pydirectinput.press("right")
                         time.sleep(random_breaks.input_break())
                     else:
-                        print("Aligned")
+                        with open("log.txt", "a") as f_temp:
+                            print("Aligned", file=f_temp)
                         pydirectinput.PAUSE = 0.1
                         break
             except TypeError:
