@@ -2,8 +2,8 @@ from random import random
 
 
 def to_grass_break():
-    # 1.64 - 1.66
-    return random() * 0.02 + 1.64
+    # 1.66 - 1.68
+    return random() * 0.02 + 1.66
 
 
 def use_cut_break():
