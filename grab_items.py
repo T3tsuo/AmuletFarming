@@ -281,7 +281,7 @@ def check_if_battle_and_aligned():
         print("Align Check", file=f_temp)
     self_align_vertical(battle_done, at_grass_align_val)
     # checking if we are in battle
-    if pyautogui.locateOnScreen(battle_done, confidence=0.8) is None:
+    if pyautogui.locateOnScreen(fight_option, confidence=0.8) is not None:
         with open("log.txt", "a") as f_temp:
             print("In Battle", file=f_temp)
         in_battle()
