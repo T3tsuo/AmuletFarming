@@ -11,6 +11,7 @@ import requests
 import random_breaks
 from shiny_notify import ping_mail, check_mail_acc
 from battle_log_config import two_log_region
+from path_correction import self_align_vertical
 
 stole_png = Image.open(requests.get("https://raw.githubusercontent.com/"
                                     "T3tsuo/AmuletFarming/main/battle_logs/stole.png", stream=True).raw)
@@ -47,6 +48,8 @@ thief_move = Image.open(requests.get("https://raw.githubusercontent.com/"
 
 shiny_png = Image.open(requests.get("https://raw.githubusercontent.com/"
                                     "T3tsuo/AmuletFarming/main/location/shiny_pokemon.png", stream=True).raw)
+
+at_grass_align_val = 148
 
 if os.path.isfile("email.dat"):
     google_email = pickle.load(open("email.dat", "rb"))
@@ -223,10 +226,14 @@ def in_battle():
             run_away()
         with open("log.txt", "a") as f_temp:
             print("Battle End", file=f_temp)
-        # found item but return if we took the item
-        return True, took_item
-    # did not find any items on pokemon so did not take it
-    return False, False
+        # found item and if we took it then take it from our pokemon
+        if took_item:
+            take_item()
+    else:
+        # did not find any items on pokemon so did not take it
+        with open("log.txt", "a") as f_temp:
+            print("Not found", file=f_temp)
+        run_away()
 
 
 def take_item():
@@ -267,25 +274,29 @@ def take_item():
                     time.sleep(random_breaks.paying_attention_break())
 
 
+def check_if_battle_and_aligned():
+    time.sleep(3)
+    # checking alignment
+    with open("log.txt", "a") as f_temp:
+        print("Align Check", file=f_temp)
+    self_align_vertical(battle_done, at_grass_align_val)
+    # checking if we are in battle
+    if pyautogui.locateOnScreen(battle_done, confidence=0.8) is None:
+        with open("log.txt", "a") as f_temp:
+            print("In Battle", file=f_temp)
+        in_battle()
+
+
 def run(x):
+    # check if we are in grass and fix ourselves while caring for wild encounters
+    check_if_battle_and_aligned()
     for i in range(x):
         # use sweet scent
         pydirectinput.press('4')
         with open("log.txt", "a") as f_temp:
             print("Sweet Scent", file=f_temp)
-        # check if item was found and if it was it will try to get it and return if it did or didn't
-        found_item, took_item = in_battle()
-        # if you did not find the item nor stole it, means that thief failed so run if the battle is done
-        if not found_item and not took_item:
-            with open("log.txt", "a") as f_temp:
-                print("Not found", file=f_temp)
-            # run away if battle isn't done
-            if pyautogui.locateOnScreen(battle_done, confidence=0.8) is None:
-                # run away from battle
-                run_away()
-        elif found_item and took_item:
-            # if item is stolen then take it off of your pokemon
-            take_item()
+        # check if item was found and if it was it will try to get it and if not then run away
+        in_battle()
     # when all of sweet scent is used then leave to pokecenter
     teleport_away()
     # then heal up
