@@ -285,6 +285,7 @@ def check_if_battle_and_aligned():
         with open("log.txt", "a") as f_temp:
             print("In Battle", file=f_temp)
         in_battle()
+    time.sleep(random_breaks.input_break())
 
 
 def run(x):
