@@ -10,6 +10,7 @@ from shiny_notify import ping_mail, check_mail_acc
 # this program grabs items and then fly's to go restore pokemon pp
 
 os.environ['REQUESTS_CA_BUNDLE'] = "certifi/cacert.pem"
+print("TEST123")
 
 if os.path.isfile("email.dat"):
     google_email = pickle.load(open("email.dat", "rb"))
